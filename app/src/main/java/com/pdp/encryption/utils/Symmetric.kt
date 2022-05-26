@@ -1,16 +1,17 @@
 package com.pdp.encryption.utils
-import javax.crypto.Cipher
 import java.io.UnsupportedEncodingException
-import java.security.NoSuchAlgorithmException
-import javax.crypto.spec.SecretKeySpec
 import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.*
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 
 /**
  * AES - Advanced Encryption Standard which is a symmetric encryption algorithm.
  */
 object Symmetric {
-    private var secretKey: SecretKeySpec? = null
+    private var secretKey = "mamarayim"
+    private var secretKeySpec: SecretKeySpec? = null
     private lateinit var key: ByteArray
 
     // set Key
@@ -21,7 +22,7 @@ object Symmetric {
             sha = MessageDigest.getInstance("SHA-1")
             key = sha.digest(key)
             key = Arrays.copyOf(key, 16)
-            secretKey = SecretKeySpec(key, "AES")
+            secretKeySpec = SecretKeySpec(key, "AES")
         } catch (e: NoSuchAlgorithmException) {
             e.printStackTrace()
         } catch (e: UnsupportedEncodingException) {
@@ -30,11 +31,11 @@ object Symmetric {
     }
 
     // method to encrypt the secret text using key
-    fun encrypt(strToEncrypt: String, secret: String): String? {
+    fun encrypt(strToEncrypt: String): String? {
         try {
-            setKey(secret)
+            setKey(secretKey)
             val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec)
             return Base64.getEncoder().encodeToString(cipher.doFinal
                 (strToEncrypt.toByteArray(charset("UTF-8"))))
         } catch (e: Exception) {
@@ -45,11 +46,11 @@ object Symmetric {
     }
 
     // method to encrypt the secret text using key
-    fun decrypt(strToDecrypt: String?, secret: String): String? {
+    fun decrypt(strToDecrypt: String?): String? {
         try {
-            setKey(secret)
+            setKey(secretKey)
             val cipher = Cipher.getInstance("AES/ECB/PKCS5Padding")
-            cipher.init(Cipher.DECRYPT_MODE, secretKey)
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec)
             return String(cipher.doFinal(Base64.getDecoder().
             decode(strToDecrypt)))
         } catch (e: Exception) {

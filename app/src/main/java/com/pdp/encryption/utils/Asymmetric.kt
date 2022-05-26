@@ -23,7 +23,9 @@ class Asymmetric {
         publicKey = pair.public
     }
 
+
     companion object {
+
         // convert String publickey to Key object
         @Throws(GeneralSecurityException::class, IOException::class)
         fun loadPublicKey(stored: String): Key {
@@ -44,6 +46,8 @@ class Asymmetric {
             return priv
         }
 
+
+
         // Encrypt using publickey
         @Throws(Exception::class)
         fun encryptMessage(plainText: String, publickey: String): String {
@@ -61,4 +65,6 @@ class Asymmetric {
             return String(cipher.doFinal(Base64.getDecoder().decode(encryptedText)))
         }
     }
+
+
 }
