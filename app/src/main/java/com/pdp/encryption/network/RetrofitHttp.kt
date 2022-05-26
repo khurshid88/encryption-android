@@ -1,5 +1,6 @@
 package com.example.android_mvc.network
 
+import com.example.android_mvc.network.service.CardService
 import com.example.android_mvc.network.service.UserService
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,6 +18,7 @@ object RetrofitHttp {
     }
 
     val userService: UserService = retrofit.create(UserService::class.java)
+    val cardService: CardService = retrofit.create(CardService::class.java)
 }
 
 
